@@ -1,0 +1,32 @@
+<div *ngIf="author" class="container">
+  <div class="row">
+    <div class="col">
+      <button class="btn btn-link" routerLink="/">Home</button>
+      <span class="d-none d-sm-inline col-sm-4"></span>
+      <button class="btn btn-link col-3 col-sm-4" routerLink='/write/{{paramId}}'>Add a quote</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <h3>Quotes by {{author.name}}:</h3>
+    </div>
+  </div>
+  <table class="table table-striped table-hover table-bordered">
+    <thead>
+      <th>Quotes</th>
+      <th>Votes</th>
+      <th>Actions available</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let q of author.quotes">
+        <td>"{{q.quote}}"</td>
+        <td>{{q.vote}}</td>
+        <td class="text-center">
+          <button class="btn btn-success col-sm-4 text-center" (click)="voteUp(q._id)">Vote Up</button>
+          <button class="btn btn-warning col-sm-4 text-center" (click)="voteDown(q, q._id)">Vote down</button>
+          <button class="btn btn-danger col-sm-4 text-center" (click)="deleteQuote(q, q._id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,24 @@
+<div class="container">
+  <button class="btn btn-lg btn-link" routerLink ="new">Add a quotable author</button>
+  <div class="row">
+    <div class="col">
+      <h3>We have quotes by:</h3>
+    </div>
+  </div>
+  <table class="table table-striped table-hover table-bordered">
+    <thead>
+      <th class="h3">Author</th>
+      <th class="h3">Actions available</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of authors">
+        <td >{{a.name}}</td>
+        <td class="text-center h4">
+          <button class="btn btn-primary col-sm-5" routerLink="quotes/{{a._id}}">View Quotes</button>
+          <span class="d-none d-sm-inline col-sm-1"></span>
+          <button class="btn btn-dark col-sm-5" routerLink="edit/{{a._id}}">Edit</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

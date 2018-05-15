@@ -1,0 +1,21 @@
+<div *ngIf="author" class="container">
+  <div class="row">
+    <button class="btn btn-link" routerLink='/'>Home</button>
+  </div>
+  <div class="row">
+    <div class="col">
+      <h3>Edit Author: {{authorname}}</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="border border-dark col-sm-9">
+      <br>
+      <form (submit)="editAuthor()">
+        <h3>Name: </h3>
+        <input class="form-control col-sm-10" required minlength="4" name="author.name" [(ngModel)]="author.name"><br>
+        <button class="col-4 btn btn-danger btn-lg" routerLink="/">Cancel</button>
+        <button class="col-4 btn btn-success btn-lg" type="submit">Submit</button>
+      </form><br>
+    </div>
+  </div>
+</div>

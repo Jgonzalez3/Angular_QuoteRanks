@@ -1,0 +1,21 @@
+<div *ngIf="author" class="container">
+  <div class="row">
+    <button class="btn btn-link" routerLink='/'>Home</button>
+  </div>
+  <div class="row">
+    <div class="col">
+      <h3>Provide a quote by {{author.name}}:</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="border border-dark col-sm-9">
+      <br>
+      <form (submit)="createQuote()">
+        <h3>Quote: </h3>
+        <input class="form-control col-sm-10" required minlength="4" name="newquote.quote" [(ngModel)]="newquote.quote"><br>
+        <button class="col-4 btn btn-danger btn-lg" routerLink="/quotes/{{paramId}}">Cancel</button>
+        <button class="col-4 btn btn-success btn-lg" type="submit">Submit</button>
+      </form><br>
+    </div>
+  </div>
+</div>
