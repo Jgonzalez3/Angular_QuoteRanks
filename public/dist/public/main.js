@@ -155,9 +155,10 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 var AddQuoteComponent = /** @class */ (function () {
-    function AddQuoteComponent(_httpService, _route) {
+    function AddQuoteComponent(_httpService, _route, _router) {
         this._httpService = _httpService;
         this._route = _route;
+        this._router = _router;
         this.newquote = { quote: "", vote: 0 };
     }
     AddQuoteComponent.prototype.ngOnInit = function () {
@@ -178,11 +179,17 @@ var AddQuoteComponent = /** @class */ (function () {
         });
     };
     AddQuoteComponent.prototype.createQuote = function () {
+        var _this = this;
         console.log(this.newquote);
         var observable = this._httpService.createQuote(this.newquote, this.paramId);
         observable.subscribe(function (data) {
             console.log("Data", data);
+            console.log("Any Errors", data['error']);
+            _this.redirectAuthorQuotes();
         });
+    };
+    AddQuoteComponent.prototype.redirectAuthorQuotes = function () {
+        this._router.navigate(['/quotes/' + this.paramId]);
     };
     AddQuoteComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -191,7 +198,8 @@ var AddQuoteComponent = /** @class */ (function () {
             styles: [__webpack_require__(/*! ./add-quote.component.css */ "./src/app/add-quote/add-quote.component.css")]
         }),
         __metadata("design:paramtypes", [_http_service__WEBPACK_IMPORTED_MODULE_1__["HttpService"],
-            _angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"]])
+            _angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"]])
     ], AddQuoteComponent);
     return AddQuoteComponent;
 }());
@@ -405,7 +413,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"author\" class=\"container\">\n  <div class=\"row\">\n    <div class=\"col\">\n      <button class=\"btn btn-link\" routerLink=\"/\">Home</button>\n      <span class=\"d-none d-sm-inline col-sm-4\"></span>\n      <button class=\"btn btn-link col-3 col-sm-4\" routerLink='/write/{{paramId}}'>Add a quote</button>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col\">\n      <h3>Quotes by {{author.name}}:</h3>\n    </div>\n  </div>\n  <table class=\"table table-striped table-hover table-bordered\">\n    <thead>\n      <th>Quotes</th>\n      <th>Votes</th>\n      <th>Actions available</th>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let q of author.quotes\">\n        <td>\"{{q.quote}}\"</td>\n        <td>{{q.vote}}</td>\n        <td class=\"text-center\">\n          <button class=\"btn btn-success col-sm-4 text-center\" (click)=\"voteUp(q._id)\">Vote Up</button>\n          <button class=\"btn btn-warning col-sm-4 text-center\" (click)=\"voteDown(q, q._id)\">Vote down</button>\n          <button class=\"btn btn-danger col-sm-4 text-center\" (click)=\"deleteQuote(q, q._id)\">Delete</button>\n        </td>\n      </tr>\n    </tbody>\n  </table>\n</div>\n"
+module.exports = "<div *ngIf=\"author\" class=\"container\">\n  <div class=\"row\">\n    <div class=\"col\">\n      <button class=\"btn btn-link\" routerLink=\"/\">Home</button>\n      <span class=\"d-none d-sm-inline col-sm-4\"></span>\n      <button class=\"btn btn-link col-3 col-sm-4\" routerLink='/write/{{paramId}}'>Add a quote</button>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col\">\n      <h3>Quotes by {{author.name}}:</h3>\n    </div>\n  </div>\n  <table class=\"table table-striped table-hover table-bordered\">\n    <thead>\n      <th>Quotes</th>\n      <th>Votes</th>\n      <th>Actions available</th>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let q of author.quotes\">\n        <td>\"{{q.quote}}\"</td>\n        <td>{{q.votes}}</td>\n        <td class=\"text-center\">\n          <button class=\"btn btn-success col-sm-4 text-center\" (click)=\"voteUp(q, q._id)\">Vote Up</button>\n          <button class=\"btn btn-warning col-sm-4 text-center\" (click)=\"voteDown(q, q._id)\">Vote down</button>\n          <button class=\"btn btn-danger col-sm-4 text-center\" (click)=\"deleteQuote(q._id)\">Delete</button>\n        </td>\n      </tr>\n    </tbody>\n  </table>\n</div>\n"
 
 /***/ }),
 
@@ -457,26 +465,35 @@ var AuthorQuotesComponent = /** @class */ (function () {
         });
     };
     AuthorQuotesComponent.prototype.deleteQuote = function (quoteid) {
+        var _this = this;
         var observable = this._httpService.deleteQuote(this.paramId, quoteid);
         observable.subscribe(function (data) {
             console.log("Delete Data", data);
             console.log("Delete ERROR", data['error']);
             console.log("Delete ERROR", data['err']);
+            _this.getQuotesFromService();
         });
-        this.getQuotesFromService();
     };
     // Work on Methods below
     AuthorQuotesComponent.prototype.voteUp = function (quote, quoteid) {
-        console.log(quote.vote);
-        quote.vote++;
-        console.log(quote.vote);
+        console.log(quote);
+        quote.votes++;
+        console.log(quote.votes);
         var observable = this._httpService.updateVote(this.paramId, quoteid, quote);
+        observable.subscribe(function (data) {
+            console.log("Any Errors", data['error']);
+            console.log("Any Errors", data['err']);
+        });
     };
     AuthorQuotesComponent.prototype.voteDown = function (quote, quoteid) {
-        console.log(quote.vote);
-        quote.vote--;
-        console.log(quote.vote);
+        console.log(quote.votes);
+        quote.votes--;
+        console.log(quote.votes);
         var observable = this._httpService.updateVote(this.paramId, quoteid, quote);
+        observable.subscribe(function (data) {
+            console.log("Any Errors", data['error']);
+            console.log("Any Errors", data['err']);
+        });
     };
     AuthorQuotesComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -720,11 +737,11 @@ var HttpService = /** @class */ (function () {
         return this._http.put('/author/edit/' + id, author);
     };
     HttpService.prototype.updateVote = function (id, quoteid, quote) {
-        return this._http.put("/quote/" + id + "/" + quoteid, quote);
+        return this._http.put("/vote/" + id + "/" + quoteid, quote);
     };
     HttpService.prototype.deleteQuote = function (id, quoteid) {
         console.log(id, quoteid);
-        return this._http.delete('/quote/' + id + "/" + quoteid);
+        return this._http.delete('/quote/' + id + '/' + quoteid);
     };
     HttpService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({

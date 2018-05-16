@@ -24,10 +24,10 @@ export class HttpService {
     return this._http.put('/author/edit/'+ id, author)
   }
   updateVote(id, quoteid, quote){
-    return this._http.put("/quote/"+ id + "/" + quoteid, quote)
+    return this._http.put("/vote/"+ id + "/" + quoteid, quote)
   }
   deleteQuote(id, quoteid){
     console.log(id, quoteid)
-    return this._http.delete('/quote/'+ id + "/"+ quoteid);
+    return this._http.delete('/quote/'+ id + '/'+ quoteid);
   }
 }

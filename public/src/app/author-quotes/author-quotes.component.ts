@@ -36,20 +36,28 @@ export class AuthorQuotesComponent implements OnInit {
       console.log("Delete Data",data);
       console.log("Delete ERROR", data['error']);
       console.log("Delete ERROR", data['err']);
+      this.getQuotesFromService();
     })
-    this.getQuotesFromService();
   }
   // Work on Methods below
   voteUp(quote, quoteid){
-    console.log(quote.vote);
-    quote.vote++;
-    console.log(quote.vote);
-    let observable = this._httpService.updateVote(this.paramId, quoteid, quote)
+    console.log(quote);
+    quote.votes++;
+    console.log(quote.votes);
+    let observable = this._httpService.updateVote(this.paramId, quoteid, quote);
+    observable.subscribe(data=>{
+      console.log("Any Errors", data['error']);
+      console.log("Any Errors", data['err']);
+    })
   }
   voteDown(quote, quoteid){
-    console.log(quote.vote);
-    quote.vote--;
-    console.log(quote.vote);
-    let observable = this._httpService.updateVote(this.paramId, quoteid, quote)
+    console.log(quote.votes);
+    quote.votes--;
+    console.log(quote.votes);
+    let observable = this._httpService.updateVote(this.paramId, quoteid, quote);
+    observable.subscribe(data=>{
+      console.log("Any Errors", data['error']);
+      console.log("Any Errors", data['err']);
+    })
   }
 }

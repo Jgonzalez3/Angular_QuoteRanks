@@ -34,15 +34,20 @@ module.exports = ()=>{
         },
         updateVote: (req, res)=>{
             var authId = req.params.id;
+            var quoteId = req.params.quoteid;
+            console.log(quoteId);
+            console.log(authId);
             Author.findById(authId, (err, author)=>{
                 if(!err){
-                    let quote = author.quotes.id(req.body.quoteId);
-                    quote.vote += req.body.quote;
-                    quote.save({runValidators: true}, (error, quote) =>{
+                    let quote = author.quotes.id(quoteId);
+                    console.log(req.body.votes);
+                    console.log(quote);
+                    quote.votes += req.body.votes;
+                    author.save({runValidators: true}, (error, quote) =>{
                         error = error ? console.log("Vote Error", error) & res.json({message: "Error Vote", error:error}): res.json({message: "Success", quote: quote})
                     })
                 } else{
-                    res.json({message: "Error with Find Author", error:err})
+                    res.json({message: "Error with Find Author", err:err})
                 }
             })
         },
@@ -50,9 +55,9 @@ module.exports = ()=>{
             var authId = req.params.id;
             var quoteId = req.params.quoteid;
             console.log(authId);
+            console.log(quoteId);
             Author.findById(authId, (err, author)=>{
                 if(!err){
-                    console.log(req.body);
                     author.quotes.id(quoteId).remove();
                     author.save((error)=>{
                         error=error ? console.log("Error Delete", error) & res.json({message: "Quote Delete error", error:error}): res.json({message: "Success"})

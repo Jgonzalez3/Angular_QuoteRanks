@@ -20,11 +20,11 @@
     <tbody>
       <tr *ngFor="let q of author.quotes">
         <td>"{{q.quote}}"</td>
-        <td>{{q.vote}}</td>
+        <td>{{q.votes}}</td>
         <td class="text-center">
-          <button class="btn btn-success col-sm-4 text-center" (click)="voteUp(q._id)">Vote Up</button>
+          <button class="btn btn-success col-sm-4 text-center" (click)="voteUp(q, q._id)">Vote Up</button>
           <button class="btn btn-warning col-sm-4 text-center" (click)="voteDown(q, q._id)">Vote down</button>
-          <button class="btn btn-danger col-sm-4 text-center" (click)="deleteQuote(q, q._id)">Delete</button>
+          <button class="btn btn-danger col-sm-4 text-center" (click)="deleteQuote(q._id)">Delete</button>
         </td>
       </tr>
     </tbody>

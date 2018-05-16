@@ -11,6 +11,7 @@ export class AddQuoteComponent implements OnInit {
   constructor(
     private _httpService: HttpService,
     private _route: ActivatedRoute,
+    private _router: Router
   ) { }
   paramId: any;
   newquote = {quote: "", vote: 0};
@@ -36,6 +37,11 @@ export class AddQuoteComponent implements OnInit {
     let observable = this._httpService.createQuote(this.newquote, this.paramId);
     observable.subscribe(data => {
       console.log("Data", data);
+      console.log("Any Errors", data['error']);
+      this.redirectAuthorQuotes();
     })
+  }
+  redirectAuthorQuotes(){
+    this._router.navigate(['/quotes/'+ this.paramId])
   }
 }
